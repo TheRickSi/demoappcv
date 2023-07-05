@@ -10,15 +10,20 @@ import ErrorMessage from "./ErrorMessage";
 import CardLoader from "./CardLoader";
 function App() {
   const [member, setMember] = useState(null);
-
-  const validaUser = (member) => {
-    setMember(member);
-  };
-  const { data: token } = PostApi(
-    member ? Global.urlAPI + "/api-token-auth/" : null,
-    member,
+  const { data: token, trigger } = PostApi(
+    Global.urlAPI + "/api-token-auth/",
     ""
   );
+  let validaUser = async (memberLog) => {
+    try {
+      await trigger({ ...memberLog });
+    } catch (error) {
+      console.log(error);
+    }
+
+    setMember(memberLog);
+  };
+
   let body;
   if (token) {
     console.log("esto se repite mucho");

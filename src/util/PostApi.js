@@ -1,26 +1,26 @@
 import axios from "axios";
-import useSWR from "swr";
-export function PostApi(route, dates, token) {
+import useSWRMutation from "swr/mutation";
+export function PostApi(route, token) {
   const head = {
     "Content-Type": "application/json",
   };
   if (token !== "") {
     head["Authorization"] = "Token " + token;
   }
-  const fetcher = async (url) => {
+  const fetcher = async (url, { arg }) => {
     const res = await axios
-      .post(url, dates, {
+      .post(url, JSON.stringify(arg), {
         headers: head,
       })
       .then((response) => {
         return {
           Response: response.data,
-          Form: dates,
+          Form: arg,
         };
       })
       .catch(function (error) {});
     return res;
   };
 
-  return useSWR(route, fetcher, { suspense: false });
+  return useSWRMutation(route, fetcher, { suspense: false });
 }

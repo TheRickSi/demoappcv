@@ -3,33 +3,32 @@ import SidebarCol from "./SidebarCol";
 import Entries from "./Entries";
 import { useState, Suspense } from "react";
 import Global from "./General";
-import { useApi } from "../Hook/Api";
 import { ErrorBoundary } from "react-error-boundary";
 import CardLoader from "./CardLoader";
 import ErrorMessage from "./ErrorMessage";
 import { GetApi } from "../util/GetApi";
 import { PutApi } from "../util/PutApi";
+
 function Body({ token }) {
   const [liked, setLiked] = useState(null);
-  const { data: member } = GetApi(
+  const { data: member, mutate } = GetApi(
     Global.urlAPI + "/member/" + token.Form.username
   );
-  const [article, setArticle] = useState(null);
-  const changeLiked = (idCite) => {
-    setArticle({
+  const changeLiked = async (idCite) => {
+    let article = {
       username: token.Form.username,
       password: token.Form.password,
       name: member.name,
       favcite: idCite,
-    });
+    };
     setLiked(idCite);
+    await trigger({ ...article });
+    mutate({ optimisticData: article });
   };
-  console.log(token);
-  PutApi(
-    article ? Global.urlAPI + "/member/" + member.username + "/" : null,
-    article,
-    token.Response.token,
-    setArticle
+
+  const { trigger } = PutApi(
+    Global.urlAPI + "/member/" + member.username + "/",
+    token.Response.token
   );
   return (
     <Container fluid>
@@ -49,10 +48,8 @@ function Body({ token }) {
               <ErrorBoundary FallbackComponent={ErrorMessage}>
                 <Suspense fallback={<CardLoader />}>
                   <Entries
-                    likedPost={liked}
-                    setLikePost={(like) => {
-                      changeLiked(like);
-                    }}
+                    member={member}
+                    setLikePost={changeLiked}
                     token={token}
                   />
                 </Suspense>

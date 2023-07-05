@@ -9,7 +9,7 @@ import CardLoader from "./CardLoader";
 import { ErrorBoundary } from "react-error-boundary";
 import ErrorMessage from "./ErrorMessage";
 import EntriTitle from "./EntriTitle";
-function Entries({ likedPost, setLikePost, token }) {
+function Entries({ member, setLikePost, token }) {
   const { data } = GetApi(Global.urlAPI + `/cite?owner=` + token.Form.username);
   return (
     <>
@@ -31,7 +31,7 @@ function Entries({ likedPost, setLikePost, token }) {
                           name="radio"
                           type="checkbox"
                           value={entrie.id}
-                          checked={entrie.id === likedPost}
+                          checked={entrie.id === member.favcite}
                           onChange={() => {
                             setLikePost(entrie.id);
                           }}
