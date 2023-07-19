@@ -9,9 +9,11 @@ import { Suspense } from "react";
 
 function SidebarCol({ post }) {
   let idCite = "";
-  if (post) {
+  if (post || post.optimisticData) {
     if (post.favcite) {
       idCite = post.favcite;
+    } else if (post.optimisticData.favcite) {
+      idCite = post.optimisticData.favcite;
     }
   }
   const { data } = GetApi(Global.urlAPI + "/cite/" + idCite);

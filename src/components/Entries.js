@@ -9,8 +9,8 @@ import CardLoader from "./CardLoader";
 import { ErrorBoundary } from "react-error-boundary";
 import ErrorMessage from "./ErrorMessage";
 import EntriTitle from "./EntriTitle";
-function Entries({ member, setLikePost, token }) {
-  const { data } = GetApi(Global.urlAPI + `/cite?owner=` + token.Form.username);
+function Entries({ member, setLikePost, username }) {
+  const { data } = GetApi(Global.urlAPI + `/cite?owner=` + username);
   return (
     <>
       <>

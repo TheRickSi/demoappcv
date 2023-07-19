@@ -13,6 +13,7 @@ export function PostApi(route, token) {
         headers: head,
       })
       .then((response) => {
+        console.log(response);
         return {
           Response: response.data,
           Form: arg,
