@@ -3,14 +3,18 @@ import ToggleButton from "react-bootstrap/ToggleButton";
 import { BsReverseListColumnsReverse } from "react-icons/bs";
 import { Button } from "react-bootstrap";
 import { Suspense } from "react";
-import { GetApi } from "../util/GetApi";
+import { getFetcher } from "../util/fetchers/getFetcher";
+import useSWR from "swr";
 import Global from "./General";
 import CardLoader from "./CardLoader";
 import { ErrorBoundary } from "react-error-boundary";
 import ErrorMessage from "./ErrorMessage";
 import EntriTitle from "./EntriTitle";
 function Entries({ member, setLikePost, username }) {
-  const { data } = GetApi(Global.urlAPI + `/cite?owner=` + username);
+  const consulUrl = Global.urlAPI + `/cite?owner=` + username;
+  const { data } = useSWR(consulUrl, getFetcher, {
+    suspense: true,
+  });
   return (
     <>
       <>

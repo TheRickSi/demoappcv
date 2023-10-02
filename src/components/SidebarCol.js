@@ -3,7 +3,8 @@ import Figure from "react-bootstrap/Figure";
 import Logo from "../assets/LogosPerfil.jpg";
 import Accordion from "react-bootstrap/Accordion";
 import Card from "react-bootstrap/Card";
-import { GetApi } from "../util/GetApi";
+import useSWR from "swr";
+import { getFetcher } from "../util/fetchers/getFetcher";
 import Global from "./General";
 import { Suspense } from "react";
 
@@ -16,12 +17,17 @@ function SidebarCol({ post }) {
       idCite = post.optimisticData.favcite;
     }
   }
-  const { data } = GetApi(Global.urlAPI + "/cite/" + idCite);
+  const { data } = useSWR(Global.urlAPI + "/cite/" + idCite, getFetcher, {
+    suspense: true,
+  });
   let isbn = "?q=key=AIzaSyDZXv-h8X6rBcHP9tOaBkMIQa18bQmQlNA";
   if (data["autor"] !== undefined) {
     isbn = "?q=" + data.isbn + "&key=AIzaSyDZXv-h8X6rBcHP9tOaBkMIQa18bQmQlNA";
   }
-  const { data: book } = GetApi(Global.bookAPI + isbn);
+  const { data: book } = useSWR(Global.bookAPI + isbn, getFetcher, {
+    suspense: true,
+  });
+
   return (
     <Container>
       <br />
