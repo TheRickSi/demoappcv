@@ -9,7 +9,8 @@ import ErrorMessage from "./ErrorMessage";
 import { getFetcher } from "../util/fetchers/getFetcher";
 import { putFetcher } from "../util/fetchers/putFetcher";
 import useSWR, { useSWRConfig } from "swr";
-
+import { Tab, Tabs } from "react-bootstrap";
+import BasicExample from "./CreateCite";
 function Body({ token }) {
   const username = JSON.parse(token.config.data).username;
   const userUrl = Global.urlAPI + "/member/" + username + "/";
@@ -38,27 +39,41 @@ function Body({ token }) {
     <Container fluid>
       <Row className="justify-content-center">
         <Col sm={4} xs={12}>
-          <ErrorBoundary FallbackComponent={ErrorMessage}>
-            <Suspense fallback={<CardLoader />}>
-              <SidebarCol post={member} />
-            </Suspense>
-          </ErrorBoundary>
+          <div className="sticky-top">
+            <ErrorBoundary FallbackComponent={ErrorMessage}>
+              <Suspense fallback={<CardLoader />}>
+                <SidebarCol post={member} />
+              </Suspense>
+            </ErrorBoundary>
+          </div>
         </Col>
         <Col sm={7} xs={12}>
           <br />
           <br />
-          <ErrorBoundary FallbackComponent={ErrorMessage}>
-            <Suspense fallback={<CardLoader />}>
-              <Entries
-                member={member}
-                setLikePost={changeLiked}
-                username={username}
-              />
-            </Suspense>
-          </ErrorBoundary>
-          <br />
-          <br />
-          <br />
+          <Tabs
+            defaultActiveKey="home"
+            id="uncontrolled-tab-example"
+            className="mb-3"
+          >
+            <Tab eventKey="home" title="Home">
+              <br />
+              <ErrorBoundary FallbackComponent={ErrorMessage}>
+                <Suspense fallback={<CardLoader />}>
+                  <Entries
+                    member={member}
+                    setLikePost={changeLiked}
+                    username={username}
+                  />
+                </Suspense>
+              </ErrorBoundary>
+              <br />
+              <br />
+              <br />
+            </Tab>
+            <Tab eventKey="insert" title="Create Cite">
+              <BasicExample />
+            </Tab>
+          </Tabs>
         </Col>
       </Row>
     </Container>
