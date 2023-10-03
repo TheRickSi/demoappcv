@@ -17,7 +17,7 @@ function SidebarCol({ post }) {
       idCite = post.optimisticData.favcite;
     }
   }
-  const { data } = useSWR(Global.urlAPI + "/cite/" + idCite, getFetcher, {
+  const { data } = useSWR(Global.urlAPI + "/cite/" + idCite + "/", getFetcher, {
     suspense: true,
   });
   let isbn = "?q=key=AIzaSyDZXv-h8X6rBcHP9tOaBkMIQa18bQmQlNA";

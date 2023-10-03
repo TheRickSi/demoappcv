@@ -11,7 +11,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import ErrorMessage from "./ErrorMessage";
 import EntriTitle from "./EntriTitle";
 function Entries({ member, setLikePost, username }) {
-  const consulUrl = Global.urlAPI + `/cite?owner=` + username;
+  const consulUrl = Global.urlAPI + `/cite/?owner=` + username;
   const { data } = useSWR(consulUrl, getFetcher, {
     suspense: true,
   });

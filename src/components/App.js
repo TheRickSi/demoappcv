@@ -24,7 +24,6 @@ function App() {
 
   let body;
   if (token) {
-    console.log("esto se repite mucho");
     body = (
       <>
         <Navbar />
